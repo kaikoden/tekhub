@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}TekHub - Quiz{% endblock %}
+{% block head %}
+<style>
+.quiz-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+    margin-top: 24px;
+}
+.quiz-card {
+    background: #e0e5ec;
+    border-radius: 24px;
+    box-shadow:
+        8px 8px 24px #b8bac0,
+        -8px -8px 24px #ffffff,
+        0 1.5px 4px #b8bac0 inset,
+        0 -1.5px 4px #ffffff inset;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 480px;
+    transition: transform 0.3s cubic-bezier(.25,.1,.25,1), box-shadow 0.3s;
+    will-change: transform, box-shadow;
+    perspective: 600px;
+}
+.quiz-card:hover {
+    transform: rotateY(6deg) scale(1.03);
+    box-shadow:
+        14px 14px 36px #b8bac0,
+        -14px -14px 36px #ffffff;
+}
+.quiz-question {
+    font-size: 1.18em;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 18px;
+    text-shadow: 1px 1px 0 #fff, 2px 2px 8px #b8bac0;
+}
+.quiz-options label {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: #e0e5ec;
+    box-shadow:
+        2px 2px 6px #b8bac0,
+        -2px -2px 6px #ffffff;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.quiz-options label:hover {
+    background: #dde1e7;
+    box-shadow:
+        4px 4px 12px #b8bac0,
+        -4px -4px 12px #ffffff;
+}
+</style>
+{% endblock %}
+{% block content %}
+<h1>Quiz</h1>
+<form method="post">
+    <div class="quiz-cards">
+    {% for q in questions %}
+        <div class="quiz-card">
+            <div class="quiz-question">
+                {{ loop.index }}. {{ q.question }}
+            </div>
+            <div class="quiz-options">
+            {% for opt in q.options %}
+                <label>
+                    <input type="radio" name="question-{{ loop.index0 }}" value="{{ opt }}" required> {{ opt }}
+                </label>
+            {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <button type="submit">Submit Answers</button>
+</form>
+{% endblock %}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}TekHub{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Cyberpunk Loader -->
+    <div id="cyber-loader" class="cyber-loader">
+      <div class="cyber-spinner"></div>
+      <span class="loader-text glitch" data-text="Loading...">Loading...</span>
+    </div>
+
+    <!-- Neon Cityscape SVG -->
+    <div class="cityscape-bg">
+      <svg viewBox="0 0 1920 300" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <g filter="url(#glow)">
+          <rect x="0" y="200" width="200" height="100" fill="#0ff" opacity="0.18"/>
+          <rect x="250" y="120" width="120" height="180" fill="#ff00ea" opacity="0.18"/>
+          <rect x="420" y="180" width="80" height="120" fill="#0ff" opacity="0.18"/>
+          <rect x="550" y="150" width="140" height="150" fill="#ff00ea" opacity="0.18"/>
+          <rect x="760" y="170" width="100" height="130" fill="#0ff" opacity="0.18"/>
+          <rect x="900" y="100" width="180" height="200" fill="#ff00ea" opacity="0.18"/>
+          <rect x="1120" y="160" width="120" height="140" fill="#0ff" opacity="0.18"/>
+          <rect x="1270" y="130" width="160" height="170" fill="#ff00ea" opacity="0.18"/>
+          <rect x="1450" y="180" width="100" height="120" fill="#0ff" opacity="0.18"/>
+          <rect x="1580" y="120" width="200" height="180" fill="#ff00ea" opacity="0.18"/>
+        </g>
+        <g class="city-lights">
+          <rect x="40" y="230" width="10" height="20" fill="#0ff"/>
+          <rect x="90" y="240" width="6" height="10" fill="#ff00ea"/>
+          <rect x="290" y="250" width="8" height="14" fill="#0ff"/>
+          <rect x="270" y="222" width="6" height="10" fill="#ff00ea"/>
+          <rect x="970" y="280" width="10" height="12" fill="#0ff"/>
+          <rect x="1100" y="290" width="8" height="8" fill="#ff00ea"/>
+          <rect x="1650" y="260" width="12" height="15" fill="#0ff"/>
+          <rect x="1700" y="240" width="8" height="12" fill="#ff00ea"/>
+        </g>
+        <defs>
+          <filter id="glow" x="-20" y="80" width="2000" height="240" filterUnits="userSpaceOnUse">
+            <feGaussianBlur stdDeviation="12" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+    <!-- Flickering Neon Grid -->
+    <div class="cyber-grid"></div>
+
+    <!-- Notification Toast -->
+    <div id="cyber-toast" class="cyber-toast"></div>
+
+    <!-- Modal Dialog -->
+    <div id="cyber-modal" class="cyber-modal">
+      <div class="cyber-modal-content">
+        <span class="cyber-modal-close" onclick="closeCyberModal()">&times;</span>
+        <h2 class="glitch" data-text="Modal Title">Modal Title</h2>
+        <p>This is a cyberpunk modal dialog! You can put any HTML here.</p>
+        <button onclick="closeCyberModal(); playCyberBeep();" class="button-glitch">Close</button>
+      </div>
+    </div>
+
+    <div class="container">
+        <!-- LOGO: add your logo image below (update src path as needed) -->
+        <img src="{{ url_for('static', filename='your-logo.png') }}" alt="Logo" class="glitch-img logo-img" data-glitch="TekHub">
+        <h1 class="glitch" data-text="TekHub">TekHub</h1>
+        <p class="glitch-paragraph" data-glitch="Welcome to the future of cyberpunk learning!">Welcome to the future of cyberpunk learning!</p>
+        {% block content %}{% endblock %}
+        <nav>
+            <a href="/">Home</a> |
+            <a href="/resources">Resources</a> |
+            <a href="/quiz">Quiz</a> |
+            <a href="/about">About</a>
+        </nav>
+    </div>
+    <audio id="cyber-beep" src="{{ url_for('static', filename='cyber-beep.mp3') }}"></audio>
+    <script>
+      // Loader fade out
+      window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          document.getElementById('cyber-loader').style.opacity = 0;
+          setTimeout(() => { document.getElementById('cyber-loader').style.display = 'none'; }, 500);
+        }, 1200);
+        document.body.classList.add("page-loaded");
+      });
+      // Page fade transition
+      document.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          if (!link.target && link.href && !link.href.endsWith('#')) {
+            document.body.classList.remove("page-loaded");
+          }
+        });
+      });
+      // Modal functions
+      function openCyberModal() { document.getElementById('cyber-modal').style.display = 'block'; }
+      function closeCyberModal() { document.getElementById('cyber-modal').style.display = 'none'; }
+      // Toast
+      function showCyberToast(msg, timeout=2500) {
+        const t = document.getElementById('cyber-toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, timeout);
+      }
+      // Sound FX
+      function playCyberBeep() {
+        var audio = document.getElementById('cyber-beep');
+        audio.currentTime = 0;
+        audio.play();
+      }
+    </script>
+</body>
+</html>
